@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block titulo %}Menu - Memory Game{% endblock %}
+
+{% block contenido %}
+<div class="pantalla-centrada-con-navbar">
+<h2 class="titulo-arcade text-center mb-5">Elige tu nivel</h2>
+
+<div class="niveles-apilados">
+    {% for nivel in niveles %}
+    <a href="{% url 'jugar' nivel.clave %}" class="text-decoration-none">
+        <div class="card card-nivel card-nivel-{{ nivel.clave }}">
+            <div class="card-body text-center p-4">
+                <h3 class="mb-3">{{ nivel.nombre }}</h3>
+                <p class="mb-1">{{ nivel.intentos }} intentos</p>
+                <p class="mb-0">{{ nivel.tiempo }} segundos</p>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block titulo %}Crear cuenta - Memory Game{% endblock %}
+
+{% block contenido %}
+<div class="pantalla-centrada-sin-navbar">
+<div class="row justify-content-center w-100">
+    <div class="col-md-5 col-lg-4">
+        <div class="card card-juego">
+            <div class="card-body p-4">
+                <h1 class="titulo-arcade text-center mb-4">MEMORY<br>GAME</h1>
+                <h5 class="text-center text-muted mb-4">Crear cuenta</h5>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% for campo in form %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ campo.label }}</label>
+                            {{ campo }}
+                            {% if campo.errors %}
+                                <div class="text-danger small">{{ campo.errors|striptags }}</div>
+                            {% endif %}
+                            {% if campo.help_text %}
+                                <div class="form-text">{{ campo.help_text }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-arcade w-100">Registrarme</button>
+                </form>
+
+                <p class="text-center mt-3 mb-0 texto-auth">
+                    ¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
