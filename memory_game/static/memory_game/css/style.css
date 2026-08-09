@@ -1,0 +1,417 @@
+:root {
+    /*  Estilo tipo Pac-Man: azul + amarillo */
+    --color-fondo: #050532;
+    --color-panel: #0d0d5c;
+    --color-acento: #ffd400;      
+    --color-acento-2: #2323c9;    
+    --color-exito: #39ff6a;
+    --color-texto: #f5f5ff;
+    --color-texto-suave: #b9b9ff;
+
+    /* Colores de los fantasmas, en las tarjetas */
+    --color-blinky: #e8332a;  
+    --color-clyde: #f5a623;   
+    --color-inky: #4dd9d0;   
+
+    --bs-body-color: var(--color-texto);
+    --bs-body-color-rgb: 245, 245, 255;
+    --bs-secondary-color: var(--color-texto-suave);
+    --bs-heading-color: var(--color-texto);
+    --bs-link-color: #7fd1ff;
+    --bs-link-hover-color: #a6e2ff;
+}
+
+body {
+    background:
+        radial-gradient(circle at top, #12126e 0%, #050532 65%);
+    color: var(--color-texto);
+    font-family: 'Press Start 2P', 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    line-height: 1.9;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6,
+.btn, label, .form-label, input, button, a,
+.navbar, .badge, th, td, .texto-auth {
+    font-family: 'Press Start 2P', 'Poppins', sans-serif;
+}
+
+p, .form-text, .alert, .stat-label {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+}
+
+.texto-auth {
+    font-size: 0.6rem;
+    line-height: 2.1;
+}
+.texto-auth a { color: #7fd1ff; }
+
+.form-label {
+    color: var(--color-texto);
+    font-size: 0.65rem;
+    margin-bottom: 0.6rem;
+}
+
+.text-muted {
+    color: var(--color-texto-suave) !important;
+}
+
+.titulo-arcade {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.4rem;
+    color: var(--color-acento);
+    text-shadow: 3px 3px 0 var(--color-acento-2);
+    line-height: 1.6;
+}
+
+.navbar-juego {
+    background: var(--color-panel);
+    border-bottom: 3px solid var(--color-acento);
+}
+.navbar-brand {
+    color: var(--color-acento) !important;
+    font-size: 0.8rem;
+    text-shadow: 2px 2px 0 var(--color-acento-2);
+}
+
+.card-juego {
+    background: var(--color-panel);
+    border: 2px solid var(--color-acento-2);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.pantalla-centrada-sin-navbar {
+    min-height: calc(100vh - 3rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.pantalla-centrada-con-navbar {
+    min-height: calc(100vh - 9rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-acento-2);
+    background: #0a0a3f;
+    color: var(--color-texto);
+}
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    outline: none;
+    border-color: var(--color-acento);
+    box-shadow: 0 0 0 3px rgba(255, 212, 0, 0.25);
+    background: #0a0a3f;
+    color: var(--color-texto);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px #0a0a3f inset !important;
+    -webkit-text-fill-color: var(--color-texto) !important;
+    caret-color: var(--color-texto);
+    transition: background-color 999999s ease-in-out 0s;
+}
+
+.btn-arcade {
+    background: var(--color-acento);
+    color: #050532;
+    font-weight: 400;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    border-radius: 10px;
+    padding: 0.8rem 1.2rem;
+    border: none;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+.btn-arcade:hover {
+    background: #ffe14d;
+    color: #050532;
+    transform: translateY(-2px);
+}
+
+.btn, .btn-outline-light, .btn-danger, .btn-outline-secondary {
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+/* --- cada tarjeta usa el color de un fantasma --- */
+.card-nivel h3 {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.card-nivel p {
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.6rem;
+    line-height: 2;
+}
+.card-nivel {
+    border-radius: 16px;
+    border: none;
+    color: #050532;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-nivel:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+}
+/* celeste, naranja, rojo */
+.card-nivel-basico { background: linear-gradient(135deg, #6ee8e0, var(--color-inky)); }
+.card-nivel-medio { background: linear-gradient(135deg, #ffc058, var(--color-clyde)); color: #3a2200; }
+.card-nivel-avanzado { background: linear-gradient(135deg, #ff6a60, var(--color-blinky)); color: #fff; }
+
+.niveles-apilados {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+}
+.niveles-apilados a { width: 100%; }
+
+/* --- HUD del juego --- */
+.hud-item {
+    background: var(--color-panel);
+    border: 1px solid var(--color-acento-2);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.hud-icono {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+/* --- Tablero --- */
+.tablero {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+}
+
+.carta {
+    aspect-ratio: 1 / 1;
+    perspective: 800px;
+    cursor: pointer;
+}
+.carta-interior {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+}
+.carta.volteada .carta-interior,
+.carta.emparejada .carta-interior {
+    transform: rotateY(180deg);
+}
+.carta-cara {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    backface-visibility: hidden;
+}
+.carta-dorso {
+    background: linear-gradient(135deg, var(--color-acento-2), #0a0a45);
+    border: 2px solid var(--color-acento);
+}
+.punto-dorso {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-acento);
+    box-shadow: 0 0 10px 2px rgba(255, 212, 0, 0.6);
+}
+.carta-frontal {
+    background: var(--color-panel);
+    border: 2px solid var(--color-exito);
+    transform: rotateY(180deg);
+    padding: 10%;
+}
+.carta-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.carta.emparejada .carta-frontal {
+    background: #06063a;
+    border-color: var(--color-acento);
+}
+
+/* --- resultado --- */
+.modal-resultado {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+}
+.modal-resultado.d-none { display: none; }
+.modal-resultado-caja {
+    background: var(--color-panel);
+    border: 3px solid var(--color-acento);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    max-width: 420px;
+}
+.modal-icono-resultado {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+}
+.stats-modal-titulo {
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.65rem;
+    color: var(--color-texto-suave);
+    margin-bottom: 0.8rem;
+}
+.stat-mini {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color-acento-2);
+    border-radius: 10px;
+    padding: 0.5rem 0.3rem;
+}
+.stat-mini span {
+    display: block;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 0.85rem;
+    color: var(--color-acento);
+}
+.stat-mini small {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.65rem;
+    color: var(--color-texto-suave);
+}
+
+/* --- Perfil --- */
+.stat-box {
+    background: var(--color-panel);
+    border: 1px solid var(--color-acento-2);
+    border-radius: 12px;
+    padding: 1rem 0.5rem;
+}
+.stat-numero {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--color-acento);
+    line-height: 1.8;
+}
+.stat-numero-sm { font-size: 0.85rem; }
+.stat-victoria .stat-numero { color: var(--color-exito); }
+.stat-derrota .stat-numero { color: var(--color-blinky); }
+.stat-label { font-size: 0.8rem; color: var(--color-texto-suave); }
+
+/* --- Tabla de historial: estética arcade en vez de la tabla genérica de Bootstrap --- */
+.tabla-arcade-wrapper {
+    background: var(--color-panel);
+    border: 2px solid var(--color-acento-2);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+.tabla-arcade {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+.tabla-arcade thead th {
+    background: linear-gradient(135deg, var(--color-acento-2), #14149c);
+    color: var(--color-acento);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+    font-size: 0.6rem;
+    padding: 0.9rem 0.75rem;
+    text-align: left;
+    border-bottom: 2px solid var(--color-acento);
+}
+.tabla-arcade tbody td {
+    font-size: 0.62rem;
+    padding: 0.8rem 0.75rem;
+    color: var(--color-texto);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    white-space: nowrap;
+}
+.tabla-arcade tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.03);
+}
+.tabla-arcade tbody tr:hover {
+    background: rgba(255, 212, 0, 0.08);
+}
+.tabla-arcade tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pastilla-nivel {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.55rem;
+    color: #050532;
+    font-weight: 600;
+}
+.pastilla-nivel-basico { background: var(--color-inky); }
+.pastilla-nivel-medio { background: var(--color-clyde); }
+.pastilla-nivel-avanzado { background: var(--color-blinky); color: #fff; }
+
+.pastilla-resultado {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.55rem;
+    border: 1px solid transparent;
+}
+.pastilla-resultado img {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+.pastilla-victoria {
+    background: rgba(57, 255, 106, 0.12);
+    color: var(--color-exito);
+    border-color: var(--color-exito);
+}
+.pastilla-derrota {
+    background: rgba(232, 51, 42, 0.12);
+    color: #ff8c85;
+    border-color: var(--color-blinky);
+}
+
+@media (max-width: 576px) {
+    .tabla-arcade-wrapper { overflow-x: auto; }
+    .tabla-arcade { min-width: 560px; }
+}

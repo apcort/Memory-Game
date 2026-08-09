@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block titulo %}Inicio sesión - Memory Game{% endblock %}
+
+{% block contenido %}
+<div class="pantalla-centrada-sin-navbar">
+<div class="row justify-content-center w-100">
+    <div class="col-md-5 col-lg-4">
+        <div class="card card-juego">
+            <div class="card-body p-4">
+                <h1 class="titulo-arcade text-center mb-4">MEMORY<br>GAME</h1>
+                <h5 class="text-center text-muted mb-4">Iniciar sesión</h5>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Usuario</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contraseña</label>
+                        {{ form.password }}
+                    </div>
+                    {% if form.non_field_errors %}
+                        <div class="text-danger small mb-3">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-arcade w-100">Entrar</button>
+                </form>
+
+                <p class="text-center mt-3 mb-0 texto-auth">
+                    ¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

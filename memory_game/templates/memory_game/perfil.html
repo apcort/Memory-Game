@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}Perfil - Memory Game{% endblock %}
+
+{% block contenido %}
+<h2 class="titulo-arcade text-center mb-4">Perfil de {{ user.username }}</h2>
+
+<div class="row g-3 mb-5 text-center">
+    <div class="col-6 col-md-2">
+        <div class="stat-box">
+            <div class="stat-numero">{{ total_partidas }}</div>
+            <div class="stat-label">Partidas</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-2">
+        <div class="stat-box stat-victoria">
+            <div class="stat-numero">{{ total_victorias }}</div>
+            <div class="stat-label">Victorias</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-2">
+        <div class="stat-box stat-derrota">
+            <div class="stat-numero">{{ total_derrotas }}</div>
+            <div class="stat-label">Derrotas</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-box">
+            <div class="stat-numero">{{ promedio_tiempo }}s</div>
+            <div class="stat-label">Tiempo promedio</div>
+        </div>
+    </div>
+    <div class="col-12 col-md-3">
+        <div class="stat-box">
+            <div class="stat-numero stat-numero-sm">{{ nivel_mas_jugado }}</div>
+            <div class="stat-label">Nivel más jugado</div>
+        </div>
+    </div>
+</div>
+
+<h4 class="mb-3">Evolución a lo largo del tiempo</h4>
+<div class="card-juego p-3 mb-5">
+    {% if total_partidas > 0 %}
+        <canvas id="grafico-evolucion" height="90"></canvas>
+    {% else %}
+        <p class="text-center text-muted mb-0 py-3">Juega tu primera partida para ver aquí tu evolución.</p>
+    {% endif %}
+</div>
+
+<h4 class="mb-3">Historial de partidas</h4>
+<div class="tabla-arcade-wrapper">
+    <table class="tabla-arcade">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Nivel</th>
+                <th>Resultado</th>
+                <th>Intentos</th>
+                <th>Tiempo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for partida in historial %}
+            <tr>
+                <td>{{ partida.fecha|date:"d/m/Y H:i" }}</td>
+                <td><span class="pastilla-nivel pastilla-nivel-{{ partida.nivel }}">{{ partida.get_nivel_display }}</span></td>
+                <td>
+                    {% if partida.resultado == 'victoria' %}
+                        <span class="pastilla-resultado pastilla-victoria">
+                            <img src="{% static 'memory_game/img/iconPartidaGanada.png' %}" alt=""> Victoria
+                        </span>
+                    {% else %}
+                        <span class="pastilla-resultado pastilla-derrota">
+                            <img src="{% static 'memory_game/img/iconoPerder.png' %}" alt=""> Derrota
+                        </span>
+                    {% endif %}
+                </td>
+                <td>{{ partida.intentos_usados }} / {{ partida.intentos_permitidos }}</td>
+                <td>{{ partida.tiempo_usado }}s</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-center text-muted py-4">Aún no has jugado ninguna partida.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="text-center mt-4">
+    <a href="{% url 'seleccionar_nivel' %}" class="btn btn-arcade">Jugar de nuevo</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+    const evolucion = {{ evolucion_json|safe }};
+
+    if (evolucion.fechas.length > 0) {
+        const ctx = document.getElementById('grafico-evolucion').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: evolucion.fechas,
+                datasets: [
+                    {
+                        label: 'Tiempo usado (s)',
+                        data: evolucion.tiempos,
+                        borderColor: '#ffd400',
+                        backgroundColor: 'rgba(255, 212, 0, 0.15)',
+                        tension: 0.3,
+                        yAxisID: 'y',
+                    },
+                    {
+                        label: 'Resultado (1 = victoria, 0 = derrota)',
+                        data: evolucion.resultados,
+                        borderColor: '#39ff6a',
+                        backgroundColor: 'rgba(57, 255, 106, 0.15)',
+                        stepped: true,
+                        yAxisID: 'y1',
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    y: {
+                        position: 'left',
+                        title: { display: true, text: 'Segundos', color: '#b7c0e8' },
+                        ticks: { color: '#b7c0e8' },
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                    },
+                    y1: {
+                        position: 'right',
+                        min: -0.2,
+                        max: 1.2,
+                        ticks: { color: '#b7c0e8', stepSize: 1 },
+                        grid: { drawOnChartArea: false },
+                    },
+                    x: {
+                        ticks: { color: '#b7c0e8', maxRotation: 45, minRotation: 45 },
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                    },
+                },
+                plugins: {
+                    legend: { labels: { color: '#f1f1f1', font: { family: 'Poppins' } } },
+                },
+            },
+        });
+    }
+</script>
+{% endblock %}
