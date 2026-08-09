@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block titulo %}{{ nivel_nombre }}{% endblock %}
+{% block titulo %}Jugando - {{ nivel_nombre }}{% endblock %}
 
 {% block contenido %}
 <div class="pantalla-centrada-con-navbar">
@@ -14,6 +14,7 @@
 </div>
 
 <div id="tablero" class="tablero mx-auto"></div>
+<p id="aviso-memoriza" class="aviso-memoriza text-center"></p>
 </div>
 
 <div id="modal-resultado" class="modal-resultado d-none">

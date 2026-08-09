@@ -1,12 +1,15 @@
-
-    /*
-        Lógica del Memory Game 
-    */
+/*
+    LÓGICA DEL JUEGO: se ejecuta enteramente en el navegador
+    (procesamiento del cliente: manejo de eventos, validaciones,
+    animaciones y el temporizador). Al finalizar la partida, el
+    resultado se envía al backend Django mediante fetch (petición HTTP)
+    para guardarlo en la base de datos.
+*/
 
 (function () {
     'use strict';
 
-    //--- Estado del juego
+    // --- Estado del juego 
     let cartasVolteadas = [];
     let paresEncontrados = 0;
     let intentosUsados = 0;
@@ -37,7 +40,7 @@
         });
     }
 
-    //--- Tablero
+    // --- tablero 
     function barajar(array) {
         const copia = [...array];
         for (let i = copia.length - 1; i > 0; i--) {
@@ -68,7 +71,7 @@
         });
     }
 
-    //--- Interacción
+    // --- Interacción del jugador 
     function manejarClicCarta(carta) {
         if (bloqueado || juegoTerminado) return;
         if (carta.classList.contains('volteada') || carta.classList.contains('emparejada')) return;
@@ -118,7 +121,7 @@
         bloqueado = false;
     }
 
-    //--- Temporizador
+    // --- Temporizador
     function iniciarTemporizador() {
         tiempoInicio = Date.now();
         reproducir(musicaFondo);
@@ -133,7 +136,7 @@
         }, 1000);
     }
 
-    //--- Fin de partida
+    // --- Fin de partida
     function finalizarJuego(resultado) {
         if (juegoTerminado) return;
         juegoTerminado = true;
@@ -209,8 +212,27 @@
         document.getElementById('stat-nivel-top').textContent = stats.nivel_mas_jugado;
     }
 
-    //--- Inicialización
+    // --- muestra todas las cartas rapidamente para que el jugador pueda memorizar su posición antes de empezar a jugar
+    const TIEMPO_VISTA_PREVIA_MS = 1500;
+
+    function mostrarVistaPreviaInicial() {
+        bloqueado = true; 
+        const avisoEl = document.getElementById('aviso-memoriza');
+        if (avisoEl) avisoEl.classList.remove('d-none');
+
+        const cartas = tablero.querySelectorAll('.carta');
+        cartas.forEach((carta) => carta.classList.add('volteada'));
+
+        setTimeout(() => {
+            cartas.forEach((carta) => carta.classList.remove('volteada'));
+            if (avisoEl) avisoEl.classList.add('d-none');
+            bloqueado = false; 
+        }, TIEMPO_VISTA_PREVIA_MS);
+    }
+
+    // --- Inicialización
     construirTablero();
     elTiempo.textContent = String(tiempoRestante);
     elIntentos.textContent = String(CONFIG_JUEGO.intentosPermitidos);
+    mostrarVistaPreviaInicial();
 })();
